@@ -1,0 +1,27 @@
+ArrayList tags = ctx._source.tag = new ArrayList();
+
+if (ctx._source?.mime == "text/x-c") {
+    tags.add("language.c");
+
+    if (ctx._source.extension == "h") {
+        tags.add("language.c.header");
+    } else if (ctx._source.extension == "dts") {
+        tags.add("language.c.device tree source");
+    }
+} else if (ctx._source?.mime == "text/x-asm") {
+    tags.add("language.assembly");
+
+    if (ctx._source.path.contains("/arm/") || ctx._source.path.contains("/arm64/")) {
+        tags.add("language.assembly.ARM#2459b5");
+    } else if (ctx._source.path.contains("/powerpc/")) {
+        tags.add("language.assembly.PPC#53d836");
+    } else if (ctx._source.path.contains("/mips/")) {
+         tags.add("language.assembly.MIPS#c3d639");
+    } else if (ctx._source.path.contains("/csky/")) {
+         tags.add("language.assembly.csky#c44023");
+    } else if (ctx._source.path.contains("/sparc/")) {
+         tags.add("language.assembly.sparc#d81cd2");
+    } else if (ctx._source.path.contains("/x86/")) {
+         tags.add("language.assembly.x86#7e21ef");
+    }
+}
